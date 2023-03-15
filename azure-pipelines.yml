@@ -1,0 +1,37 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool: Automation Pool
+
+
+variables:
+  buildConfiguration : 'Release'
+
+steps:
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo Write your commands here
+      echo Hello world
+      echo Workspace: $(Pipeline.Workspace)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/*.csproj'
+    testRunTitle: 'AutomationTest Runner'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)\s\AutomationTest\AutomationTest\bin\Debug\net6.0\1.png'
+    artifact: 'Test-results'
+    publishLocation: 'pipeline'
+    
+- task: PostBuildCleanup@3
